@@ -10,6 +10,19 @@ For the specified journal and issues the plugin can deposit a zip archive contai
 - XML (JATS 1.2, this will send the Galley if there is one or will generate a stub otherwise)
 - Any images references in the XML file
 
+## Setup
+
+In order to use this plugin you will need to obtain FTP credentials and a ECDSA key for the server being deposited on.
+
+```
+LOC_FTP_SERVER = 'a.server.com'
+LOC_FTP_USERNAME = 'ausername'
+LOC_FTP_PASSWORD = 'apassword',
+LOC_FTP_SERVER_KEY = 'averylongkeywillgohere'
+```
+
+Add the above variables to your settings.py file.
+
 ## Usage
 
 The deposit process can be invoked on two ways:
