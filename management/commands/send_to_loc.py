@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from janeway_ftp import ftp
+from janeway_ftp import sftp
 
 from plugins.loc_deposit import utils
 from journal import models
@@ -37,9 +37,12 @@ class Command(BaseCommand):
             )
             zip_file, file_name = utils.package_issues_for_deposit(issues, initial=initial)
 
-            ftp.send_file_via_ftp(
+            sftp.send_file_via_sftp(
                 ftp_server=settings.LOC_FTP_SERVER,
                 ftp_username=settings.LOC_FTP_USERNAME,
                 ftp_password=settings.LOC_FTP_PASSWORD,
+                ftp_server_key=settings.LOC_FTP_SERVER_KEY,
+                remote_file_path='',
                 file_path=zip_file,
+                file_name=file_name,
             )
