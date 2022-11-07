@@ -4,6 +4,7 @@ from django.db import models
 class JournalSRN(models.Model):
     journal = models.OneToOneField(
         'journal.Journal',
+        on_delete=models.CASCADE,
     )
     srn = models.CharField(
         max_length=12,

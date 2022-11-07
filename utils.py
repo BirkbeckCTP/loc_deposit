@@ -1,13 +1,16 @@
 import os
 
-from janeway_ftp import ftp
+from janeway_ftp import ftp, helpers as deposit_helpers
 
-from utils.deposit import helpers as deposit_helpers
 from core import files
 
 
 def add_article_to_package(request, article, temp_folder):
-    article_folder = os.path.join(temp_folder, str(article.pk))
+    issue_folder_name = "vol{}-issue{}".format(
+        article.primary_issue.volume if article.primary_issue else article.issue.volume,
+        article.primary_issue.issue if article.primary_issue else article.issue.issue
+    )
+    article_folder = os.path.join(temp_folder, issue_folder_name, str(article.pk))
     files.mkdirs(article_folder)
     galleys = article.galley_set.all()
 
@@ -26,7 +29,6 @@ def add_article_to_package(request, article, temp_folder):
             )
     else:
         deposit_helpers.generate_jats_metadata(
-            request,
             article,
             article_folder,
         )
@@ -40,17 +42,22 @@ def add_article_to_package(request, article, temp_folder):
         )
 
 
-def package_issues_for_deposit(issues, initial=False, serve=False):
-    # TODO: replace with actual code
-    loc_code = '1-950967504_{}'.format(
+def package_issues_for_deposit(journal, issues, user, initial=False, serve=False):
+    loc_code = '{}_{}{}'.format(
+        journal.journalsrn.srn,
         'initial_' if initial else '',
+        journal.journalsrn.journal_name_filename if journal.journalsrn.journal_name_filename else '',
+
     )
     temp_folder, folder_string = deposit_helpers.prepare_temp_folder(
         loc_code=loc_code,
     )
     for issue in issues:
+        request = deposit_helpers.create_fake_request(
+            journal=issue.journal,
+            user=user,
+        )
         for article in issue.issue_articles:
-            request = deposit_helpers.create_fake_request(issue=issue)
             add_article_to_package(request, article.get('article'), temp_folder)
 
     deposit_helpers.zip_temp_folder(temp_folder)
