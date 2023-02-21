@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from janeway_ftp import sftp
 
-from plugins.loc_deposit import utils, models as loc_models
+from plugins.loc_transporter import utils, models as loc_models
 from journal import models
 from core import models as core_models
 
@@ -44,21 +44,11 @@ class Command(BaseCommand):
                     pk__in=issue_ids,
                     journal=journal,
                 )
-                zip_file, file_name = utils.package_issues_for_deposit(
+                utils.send_issue(
                     journal,
                     issues,
                     user,
                     initial=initial,
-                )
-
-                sftp.send_file_via_sftp(
-                    ftp_server=settings.LOC_FTP_SERVER,
-                    ftp_username=settings.LOC_FTP_USERNAME,
-                    ftp_password=settings.LOC_FTP_PASSWORD,
-                    ftp_server_key=settings.LOC_FTP_SERVER_KEY,
-                    remote_file_path='loc',
-                    file_path=zip_file,
-                    file_name=file_name,
                 )
             else:
                 exit('No issue codes supplied.')

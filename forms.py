@@ -1,6 +1,6 @@
 from django import forms
 
-from plugins.loc_deposit import models
+from plugins.loc_transporter import models
 from journal import models as jm
 
 

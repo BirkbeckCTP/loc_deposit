@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('loc_deposit', '0002_auto_20220825_1752'),
+        ('loc_transporter', '0002_auto_20220825_1752'),
     ]
 
     operations = [

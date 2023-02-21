@@ -1,8 +1,28 @@
 import os
+from janeway_ftp import sftp, helpers as deposit_helpers
 
-from janeway_ftp import ftp, helpers as deposit_helpers
+from plugins.loc_transporter import plugin_settings
 
 from core import files
+
+
+def send_issue(journal, issues, user, initial=False):
+    zip_file, file_name = package_issues_for_deposit(
+        journal,
+        issues,
+        user,
+        initial=initial,
+    )
+    print(zip_file, file_name)
+    sftp.send_file_via_sftp(
+        ftp_server=plugin_settings.LOC_FTP_SERVER,
+        ftp_username=plugin_settings.LOC_FTP_USERNAME,
+        ftp_password=plugin_settings.LOC_FTP_PASSWORD,
+        ftp_server_key=plugin_settings.LOC_FTP_SERVER_KEY,
+        remote_file_path='loc',
+        file_path=zip_file,
+        file_name=file_name,
+    )
 
 
 def add_article_to_package(request, article, temp_folder):
@@ -43,11 +63,12 @@ def add_article_to_package(request, article, temp_folder):
 
 
 def package_issues_for_deposit(journal, issues, user, initial=False, serve=False):
-    loc_code = '{}_{}{}'.format(
+    issue_pks = "_".join([str(issue.pk) for issue in issues])
+    loc_code = '{}_{}{}{}'.format(
         journal.journalsrn.srn,
         'initial_' if initial else '',
         journal.journalsrn.journal_name_filename if journal.journalsrn.journal_name_filename else '',
-
+        f'_issues_{issue_pks}' if not initial else ''
     )
     temp_folder, folder_string = deposit_helpers.prepare_temp_folder(
         loc_code=loc_code,

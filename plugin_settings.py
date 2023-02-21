@@ -5,8 +5,8 @@ DISPLAY_NAME = 'Library of Congress'
 DESCRIPTION = 'Libray of Congress Deposit Plugin'
 AUTHOR = 'Andy Byers'
 VERSION = '0.1'
-SHORT_NAME = 'loc_deposit'
-MANAGER_URL = 'loc_deposit_manager'
+SHORT_NAME = 'loc_transporter'
+MANAGER_URL = 'loc_transporter_manager'
 JANEWAY_VERSION = "1.4.2"
 
 
