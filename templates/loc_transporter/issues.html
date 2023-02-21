@@ -10,6 +10,7 @@
         <a href="{% url 'loc_transporter_manager' %}" class="button"><span class="fa fa-arrow-circle-o-left"></span> Back</a>
     </div>
     <div class="content">
+        <p>Note: only published articles will be deposited.</p>
         <form method="POST">
             {% csrf_token %}
             <table class="table" id="issue_table">
@@ -18,7 +19,6 @@
                         <th>Issue</th>
                         <th>Issue ID</th>
                         <th>Date Published</th>
-                        <th>Number of Articles</th>
                         <th>Send to Library of Congress</th>
                         <th>Download Zip</th>
                     </tr>
@@ -29,7 +29,6 @@
                             <td width="35%">{{ issue.display_title|safe }}</td>
                             <td>{{ issue.pk }}</td>
                             <td>{{ issue.date }}</td>
-                            <td>{{ issue.articles.count }}</td>
                             <td><button class="small button success" name="send-to-loc" value="{{ issue.pk }}"><span class="fa fa-cloud-upload"></span> Send</button></td>
                             <td><button class="small success button" name="export-download" value="{{ issue.pk }}"><span class="fa fa-cloud-download"></span> Download</button></td>
                         </tr>
