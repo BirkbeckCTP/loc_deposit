@@ -23,7 +23,7 @@
             <tbody>
                 {% for srn in srns %}
                 <tr>
-                    <td><a href="{% url 'loc_view_journal_issues' srn.srn %}">{{ srn.journal.name }} ({{ srn.journal.code }})</a></td>
+                    <td><a href="{% url 'loc_view_journal_issues' srn.pk %}">{{ srn.journal.name }} ({{ srn.journal.code }})</a></td>
                     <td>{{ srn.srn }}</td>
                     <td>{{ srn.journal_name_filename }}</td>
                     <td><a href="{% url 'loc_edit_srn' srn.pk %}" class="button">Edit</a></td>

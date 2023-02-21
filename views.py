@@ -81,7 +81,7 @@ def manage_srn(request, srn_id=None):
 def view_journal_issues(request, srn_id):
     srn = get_object_or_404(
         models.JournalSRN,
-        srn=srn_id,
+        pk=srn_id,
     )
     journal = srn.journal
 
@@ -138,7 +138,7 @@ def view_journal_issues(request, srn_id):
             reverse(
                 'loc_view_journal_issues',
                 kwargs={
-                    'srn_id': srn.srn,
+                    'srn_id': srn.pk,
                 }
             )
         )
