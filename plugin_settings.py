@@ -7,7 +7,7 @@ AUTHOR = 'Andy Byers'
 VERSION = '0.4'
 SHORT_NAME = 'loc_transporter'
 MANAGER_URL = 'loc_transporter_manager'
-JANEWAY_VERSION = "1.4.2"
+JANEWAY_VERSION = "1.7.0"
 
 
 class LOCDepositPlugin(plugins.Plugin):
